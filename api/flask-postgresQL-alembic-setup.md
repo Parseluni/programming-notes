@@ -34,8 +34,13 @@ https://flask.palletsprojects.com/en/1.1.x/#api-reference
 
        $ psql -U postgres
        $ CREATE DATABASE my_database_name;
+       
+5. Create app folder and __init__.py file:
 
-5. Server actions:  
+       (venv) $ mkdir app
+       (venv) $ touch app/__init__.py
+
+6. Server actions:  
 
 Building an API means that we're building a web server. A web server needs to be running in order to be accessible to clients. Running a web server makes it available to respond to HTTP requests at a particular address and port.
   
@@ -94,8 +99,9 @@ This tells Flask to connect to our database using the `psycopg2` package we inst
         ├── README.md
         └── requirements.txt
     
-1. Create a file for the model `Book` following the pattern of creating a file for every model (see above):  
+1. Create a folder `models` and a file for the model `Book` following the pattern of creating a file for every model (see above):  
 
+      (venv) mkdir models
       (venv) $ touch app/models/book.py
       
 2. Create a class for each model, here `Book`, to define the model's state and behavior:
