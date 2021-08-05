@@ -20,7 +20,7 @@ https://flask.palletsprojects.com/en/1.1.x/#api-reference
        $ mkdir my-app-name
        $ cd my-app-name
 
-2. Virtual environment (`cd` into the project folder, create a virtual environment and activate it):
+2. Virtual environment:
 
        $ python3 -m venv venv
        $ source venv/bin/activate    
