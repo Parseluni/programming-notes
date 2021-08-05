@@ -27,20 +27,30 @@ https://flask.palletsprojects.com/en/1.1.x/#api-reference
     
 3. Install dependencies:   
 
-       (venv) $ pip install flask flask-sqlalchemy flask-cors ariadne (and others as needed)
+       (venv) $ pip install flask flask-sqlalchemy flask-cors flask-migrate python-dotenv ariadne (and others as needed)
        (venv) $ pip freeze > requirements.txt
        
-4. Create database using the Postgres interactive terminal as the user named postgres:      
+4. Create development and test databases using the Postgres interactive terminal as the user named postgres:      
 
        $ psql -U postgres
-       $ CREATE DATABASE my_database_name;
+       $ CREATE DATABASE my_database_name_development;
+       $ CREATE DATABASE my_database_name_test;
        
 5. Create app folder and __init__.py file:
 
        (venv) $ mkdir app
        (venv) $ touch app/__init__.py
 
-6. Server actions:  
+6. Configure the Flask application  in `app/__init__.py` with the corresponding imports:  
+
+        from flask import Flask
+
+        def create_app(test_config=None):
+            app = Flask(__name__)
+
+            return app
+            
+7. Server actions:  
 
 Building an API means that we're building a web server. A web server needs to be running in order to be accessible to clients. Running a web server makes it available to respond to HTTP requests at a particular address and port.
   
@@ -65,25 +75,46 @@ This tells Flask to connect to our database using the `psycopg2` package we inst
         from flask import Flask
         from flask_sqlalchemy import SQLAlchemy
         from flask_migrate import Migrate     # companion package to SQLAlchemy
+        from dotenv import load_dotenv
+        from flask_cors import CORS
+        import os
 
         # Sets up db and migrate, which are conventional variables that give us access to database operations
         db = SQLAlchemy()
         migrate = Migrate()
+        load_dotenv()
 
         def create_app(test_config=None):
             app = Flask(__name__)
-
-            # Configures the app to include two new SQLAlchemy settings
-            app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-            app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost:5432/my_database_name'
-
+            
+            #if not in test mode
+            if not test_config:
+                # Configures the app to include two new SQLAlchemy settings
+                app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+                app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("SQLALCHEMY_DATABASE_URI")
+            else:
+                # test configuration is on
+                app.config["TESTING"] = True
+                app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+                app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_TEST_DATABASE_URI")
+            
             # Connects db and migrate to our Flask app
             db.init_app(app)
             migrate.init_app(app, db)
 
             return app
 
-2. Connect database to Flask (once we have created our database and configured the connection string, we can do this one-time setup command):  
+2. Create dotenv file to separate secrets from the source code (add `.env` to the `.gitignore` file as well):  
+
+       (venv) $ touch .env
+       
+3. Populate `.env` following the structure `VARIABLE_NAME=variable value`:  
+
+       FLASK_ENV=development
+       SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://postgres:postgres@localhost:5432/my_database_name_development
+       SQLALCHEMY_TEST_DATABASE_URI=postgresql+psycopg2://postgres:postgres@localhost:5432/my_database_name_test
+       
+5. Connect database to Flask (once we have created our database and configured the connection string, we can use this one-time setup command):  
 
        (venv) $ flask db init
 
