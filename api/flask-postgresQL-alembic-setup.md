@@ -15,10 +15,10 @@ https://flask.palletsprojects.com/en/1.1.x/#api-reference
 
 ## Initial Set-up ##
   
-1. GitHub options to start a project: 
+1. Project setup (or fork/clone from github repo): 
 
-       Fork and clone the project repo onto our machine (or just clone)
-       Create a new, empty project folder
+       $ mkdir my-app-name
+       $ cd my-app-name
 
 2. Virtual environment (`cd` into the project folder, create a virtual environment and activate it):
 
