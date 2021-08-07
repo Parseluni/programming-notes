@@ -27,7 +27,7 @@ https://flask.palletsprojects.com/en/1.1.x/#api-reference
     
 3. Install dependencies:   
 
-       (venv) $ pip install flask flask-sqlalchemy flask-cors flask-migrate python-dotenv ariadne (and others as needed)
+       (venv) $ pip install flask flask-sqlalchemy flask-cors flask-migrate python-dotenv psycopg2-binary flask-graphql ariadne (and others as needed)
        (venv) $ pip freeze > requirements.txt
        
 4. Create development and test databases using the Postgres interactive terminal as the user named postgres:      
