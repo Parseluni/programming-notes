@@ -212,6 +212,8 @@ Command | Action
     - updating dependencies (after any updates to the requirements file):  
     
           (venv) $ pip freeze > requirements.txt
+          (venv) $ pip install -r requirements/development.txt
+
        
     - updating local database by generating and running the migration files with Alembic after each model change:  
 
