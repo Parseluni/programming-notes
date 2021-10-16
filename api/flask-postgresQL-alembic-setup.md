@@ -132,7 +132,7 @@ This tells Flask to connect to our database using the `psycopg2` package we inst
     
 1. Create a folder `models` and a file for the model `Book` following the pattern of creating a file for every model (see above):  
 
-      (venv) mkdir models
+      (venv) mkdir models                 
       (venv) $ touch app/models/book.py
       
 2. Create a class for each model, here `Book`, to define the model's state and behavior:
